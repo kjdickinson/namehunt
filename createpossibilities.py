@@ -24,8 +24,6 @@ for o, a in optlist:
 		assert False, "unhandled option"        
         
 
-if (len(sys.argv) == 2):
-	outputfile = sys.argv[1];
 	
 
 
