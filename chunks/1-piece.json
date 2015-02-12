@@ -40399,11 +40399,6 @@
         "created": "2013-05-01T00:00:00",
         "updated": "2014-04-13T00:00:00"
     },
-    "viwbz": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
-    },
     "viwia": {
         "checked": 0,
         "created": "",
@@ -40885,9 +40880,9 @@
         "updated": ""
     },
     "wieth": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
+        "checked": 1,
+        "created": "2003-03-11T00:00:00",
+        "updated": "2015-02-09T00:00:00"
     },
     "wieti": {
         "checked": 1,
@@ -46709,11 +46704,6 @@
         "created": "",
         "updated": ""
     },
-    "zijxe": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
-    },
     "zikce": {
         "checked": 0,
         "created": "",
@@ -46725,9 +46715,9 @@
         "updated": "2014-04-22T00:00:00"
     },
     "zikom": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
+        "checked": 1,
+        "created": "2002-01-04T00:00:00",
+        "updated": "2015-01-05T00:00:00"
     },
     "zikos": {
         "checked": 1,
@@ -47105,11 +47095,6 @@
         "updated": "2015-01-11T00:00:00"
     },
     "zinyp": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
-    },
-    "zinyq": {
         "checked": 0,
         "created": "",
         "updated": ""
@@ -47754,11 +47739,6 @@
         "created": "2013-12-04T00:00:00",
         "updated": "2015-02-09T00:00:00"
     },
-    "zizob": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
-    },
     "zizoe": {
         "checked": 1,
         "created": "2005-11-12T00:00:00",
@@ -47780,9 +47760,9 @@
         "updated": "2014-07-16T00:00:00"
     },
     "zizol": {
-        "checked": 0,
-        "created": "",
-        "updated": ""
+        "checked": 1,
+        "created": "2010-11-23T00:00:00",
+        "updated": "2014-12-05T00:00:00"
     },
     "zizon": {
         "checked": 1,
