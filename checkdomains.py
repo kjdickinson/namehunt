@@ -6,10 +6,10 @@ import sys
 import getopt;
 
 def usage():
-	print "Usage: checkdomains.py [--output <filename>] [--input <filename>] [-h]"
+	print "Usage: checkdomains.py [--output <filename>] [--input <filename>] [--in-place <filename>][-h]"
 
 try: 
-	optlist, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['output=', 'input=', 'help'])
+	optlist, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['output=', 'input=', 'help', 'in-place='])
 except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) 
@@ -25,6 +25,9 @@ for o, a in optlist:
 		outputfile = a
 	elif o in ("-i", "--input"):
 		inputfile = a
+	elif o in ("--in-place"):
+		inputfile = a
+		outputfile = a
 	else:
 		assert False, "unhandled option"
 
