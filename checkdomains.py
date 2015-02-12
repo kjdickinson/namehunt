@@ -9,7 +9,7 @@ def usage():
 	print "Usage: checkdomains.py [--output <filename>] [--input <filename>] [-h]"
 
 try: 
-	optlist, args = getopt.getopt(sys.argv[1:], 'hio:', ['output=', 'input=', 'help'])
+	optlist, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['output=', 'input=', 'help'])
 except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) 
@@ -61,9 +61,11 @@ for k in namedata.keys():
 print str(checked) + "/" + str(len(namedata)) + " completed."; 
 print str(tocheck) + "/" + str(len(namedata)) + " remain."; 
 
+checkCount = 0;
 for k in namedata.keys():
 	if (namedata[k]['checked'] == 1):
 		continue
+	checkCount += 1;
 	domain = whois.query(str(k) + ".com");
 	if (domain):
 		namedata[k]['checked'] = 1;
@@ -72,6 +74,7 @@ for k in namedata.keys():
 		print k + " found.";
 	else:
 		del namedata[k];
+	print "Completed " + str(checkCount) + "/" + str(tocheck)
 
 
 print "Starting to write outputfile.";
