@@ -9,10 +9,10 @@ import re;
 companyName = re.compile('^.i.v.$');
 
 def usage():
-	print "Usage: checkdomains.py [--output <filename>] [--input <filename>] [--in-place <filename>][-h]"
+	print "Usage: checkdomains.py [--output <filename>] [--input <filename>] [--in-place <filename>][-h] [--nowhois]"
 
 try:
-	optlist, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['output=', 'input=', 'help', 'in-place='])
+	optlist, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['output=', 'input=', 'help', 'in-place=', 'nowhois'])
 except getopt.GetoptError as err:
         # print help information and exit:
         print str(err)
@@ -20,6 +20,7 @@ except getopt.GetoptError as err:
         sys.exit(2)
 inputfile = 'possibilities.json';
 outputfile = 'possibilities-filtered.json';
+dowhois = 1
 for o, a in optlist:
 	if o in ("-h", "--help"):
 		usage()
@@ -31,6 +32,8 @@ for o, a in optlist:
 	elif o in ("--in-place"):
 		inputfile = a
 		outputfile = a
+	elif o in ("--nowhois"):
+		dowhois = 0
 	else:
 		assert False, "unhandled option"
 
@@ -70,7 +73,32 @@ print str(tocheck) + "/" + str(len(namedata)) + " remain.";
 startlength = len(namedata)
 checkCount = 0;
 
-knownstuck = ['likvc', 'aiivs', 'tikvx', 'tikvs', 'tikvr', 'sicvo', 'micve', 'zivvi', 'yicvs']
+knownstuck = ['likvc',
+              'aiivs',
+			  'tikvx',
+			  'tikvs',
+			  'tikvr',
+			  'sicvo',
+			  'micve',
+			  'zivvi',
+			  'yicvs',
+			  'vitvb',
+			  'aiove',
+			  'xinve',
+			  'bitvv',
+			  'riqvy',
+			  'uimvp',
+			  'yixve',
+			  'oiyvf',
+			  'milvs',
+			  'tibvb',
+			  'divvv',
+			  'ticvo',
+			  'pinvs',
+			  'rivvu',
+			  'giova',
+			  'giovo',
+			]
 
 for k in namedata.keys():
 	checkCount += 1;
@@ -84,19 +112,18 @@ for k in namedata.keys():
 	# Known stuck hostname
 	if (k in knownstuck):
 		continue;
-
-
-
 	if ('checked' in namedata[k]):
 		del namedata[k]['checked']
 	if (len(namedata[k]['updated']) > 0):
 		continue
-
+	if (dowhois == 0):
+		continue
 
 	try:
-		domain = whois.query(str(k) + ".com");
+		domain = whois.query(str(k) + ".com", ignore_returncode=1);
 	except:
-		print "Whois exception";
+		e = sys.exc_info()[1]
+		print "Whois exception: " + str(e);
 		outfile = open(outputfile, 'w');
 		outfile.write(json.dumps(namedata, sort_keys=True, indent=4, separators=(',', ': ')));
 		print "Done writing ouput file";
