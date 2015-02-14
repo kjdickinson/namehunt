@@ -4,15 +4,18 @@ import whois;
 import signal
 import sys
 import getopt;
+import re;
+
+companyName = re.compile('^.i.v.$');
 
 def usage():
 	print "Usage: checkdomains.py [--output <filename>] [--input <filename>] [--in-place <filename>][-h]"
 
-try: 
+try:
 	optlist, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['output=', 'input=', 'help', 'in-place='])
 except getopt.GetoptError as err:
         # print help information and exit:
-        print str(err) 
+        print str(err)
         usage()
         sys.exit(2)
 inputfile = 'possibilities.json';
@@ -42,7 +45,7 @@ def signal_handler(signal, frame):
     print "Done writing ouput file";
     outfile.close();
     exit(0);
-    
+
 signal.signal(signal.SIGINT, signal_handler)
 
 
@@ -56,38 +59,63 @@ print "Finished reading input file.";
 tocheck = 0;
 checked = 0;
 for k in namedata.keys():
-	if (namedata[k]['checked'] == 1):
+	if (len(namedata[k]['updated']) > 0):
 		checked += 1;
 	else:
 		tocheck += 1;
 
-print str(checked) + "/" + str(len(namedata)) + " completed."; 
-print str(tocheck) + "/" + str(len(namedata)) + " remain."; 
+print str(checked) + "/" + str(len(namedata)) + " completed.";
+print str(tocheck) + "/" + str(len(namedata)) + " remain.";
 
+startlength = len(namedata)
 checkCount = 0;
+
+knownstuck = ['likvc', 'aiivs', 'tikvx', 'tikvs', 'tikvr', 'sicvo', 'micve', 'zivvi', 'yicvs']
+
 for k in namedata.keys():
-	if (namedata[k]['checked'] == 1):
-		continue
 	checkCount += 1;
-	domain = whois.query(str(k) + ".com");
+
+	print "Consider: " + str(checkCount) + " of " + str(startlength) + " " + k
+	# If the name doesn't match *i*v* then remove it
+	if (not companyName.match(k)):
+		del namedata[k]
+		continue
+
+	# Known stuck hostname
+	if (k in knownstuck):
+		continue;
+
+
+
+	if ('checked' in namedata[k]):
+		del namedata[k]['checked']
+	if (len(namedata[k]['updated']) > 0):
+		continue
+
+
+	try:
+		domain = whois.query(str(k) + ".com");
+	except:
+		print "Whois exception";
+		outfile = open(outputfile, 'w');
+		outfile.write(json.dumps(namedata, sort_keys=True, indent=4, separators=(',', ': ')));
+		print "Done writing ouput file";
+		outfile.close();
+		exit(0);
+
 	if (domain):
-		namedata[k]['checked'] = 1;
+		if ('checked' in namedata[k]):
+			del namedata[k]['checked']
 		namedata[k]['created'] = domain.creation_date.isoformat();
 		namedata[k]['updated'] = domain.last_updated.isoformat();
 		print k + " found.";
 	else:
 		del namedata[k];
-	print "Completed " + str(checkCount) + "/" + str(tocheck)
+
 
 
 print "Starting to write outputfile.";
 outfile = open(outputfile, 'w');
 outfile.write(json.dumps(namedata, sort_keys=True, indent=4, separators=(',', ': ')));
 print "Done writing ouput file";
-outfile.close();			
-		
-	
-	
-		
-
-
+outfile.close();
